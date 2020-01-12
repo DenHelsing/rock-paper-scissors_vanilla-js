@@ -15,12 +15,7 @@ scissors_div.addEventListener("click", () => startGameSession("s"));
 userScore_span.innerText = userScore;
 
 const startGameSession = userChoice => {
-    const generateChoice = Math.random() * 10;
-    const pcChoice = (function() {
-        if (generateChoice <= 3.33) return "r";
-        else if (generateChoice <= 6.66) return "p";
-        else return "s";
-    })();
+    const pcChoice = generatePcChoice();
     console.log(pcChoice);
     const result = battleResult(userChoice, pcChoice);
     console.log(result);
@@ -31,6 +26,14 @@ const startGameSession = userChoice => {
     }
     changeScore();
     changeResultLabel(userChoice, pcChoice, result);
+};
+
+const generatePcChoice = () => {
+    const choices = ["r", "p", "s"];
+    const generatedNumber = Math.floor(Math.random() * 3);
+    const pcChoice = choices[generatedNumber];
+
+    return pcChoice;
 };
 
 const battleResult = (userChoice, pcChoice) => {

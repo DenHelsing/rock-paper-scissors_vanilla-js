@@ -3,7 +3,7 @@ let pcScore = 0;
 const userScore_span = document.getElementById("user-score");
 const pcScore_span = document.getElementById("pc-score");
 const scoreBoard_div = document.querySelector(".score-board");
-const result_div = document.querySelector(".result");
+const result_p = document.querySelector(".result > p");
 const rock_div = document.getElementById("r");
 const scissors_div = document.getElementById("s");
 const paper_div = document.getElementById("p");
@@ -19,12 +19,7 @@ const startGameSession = userChoice => {
     console.log(pcChoice);
     const result = battleResult(userChoice, pcChoice);
     console.log(result);
-    if (result === "win") {
-        userScore++;
-    } else if (result === "loss") {
-        pcScore++;
-    }
-    changeScore();
+    changeScore(result);
     changeResultLabel(userChoice, pcChoice, result);
 };
 
@@ -58,50 +53,78 @@ const battleResult = (userChoice, pcChoice) => {
     }
 };
 
-const changeScore = () => {
-    if (userScore !== +userScore_span.innerText) {
+const changeScore = result => {
+    if (result === "win") {
+        userScore++;
         userScore_span.innerHTML = userScore;
-    }
-    if (pcScore !== +pcScore_span.innerText) {
+    } else if (result === "loss") {
+        pcScore++;
         pcScore_span.innerHTML = pcScore;
     }
+    // if (userScore !== +userScore_span.innerText) {
+    //     userScore_span.innerHTML = userScore;
+    // }
+    // if (pcScore !== +pcScore_span.innerText) {
+    //     pcScore_span.innerHTML = pcScore;
+    // }
+};
+
+const convertChoiceToWord = choice => {
+    if (choice === "r") return "Rock";
+    if (choice === "p") return "Paper";
+    else return "Scissors";
+};
+
+const convertResultToWord = result => {
+    if (result === "win") return "beats";
+    if (result === "loss") return "loses to";
+    else return "played draw with";
 };
 
 const changeResultLabel = (userChoice, pcChoice, result) => {
-    let result_string = "";
-    if (userChoice === "r") {
-        result_string += "Rock";
-    }
-    if (userChoice === "p") {
-        result_string += "Paper";
-    }
-    if (userChoice === "s") {
-        result_string += "Scissors";
-    }
-    result_string += " user".sub();
+    const user = "user".fontsize(3).sub();
+    const pc = "pc".fontsize(3).sub();
 
-    if (result === "win") {
-        result_string += " beats ";
-    }
-    if (result === "draw") {
-        result_string += " played draw with ";
-    }
-    if (result === "loss") {
-        result_string += " lost ";
-    }
+    const result_string = `${convertChoiceToWord(
+        userChoice
+    )}${user} ${convertResultToWord(result)} ${convertChoiceToWord(
+        pcChoice
+    )}${pc}`;
 
-    if (pcChoice === "r") {
-        result_string += " Rock ";
-    }
-    if (pcChoice === "p") {
-        result_string += " Paper ";
-    }
-    if (pcChoice === "s") {
-        result_string += " Scissors ";
-    }
-    result_string += " pc".sub();
+    // if (userChoice === "r") {
+    //     result_string += "Rock";
+    // }
+    // if (userChoice === "p") {
+    //     result_string += "Paper";
+    // }
+    // if (userChoice === "s") {
+    //     result_string += "Scissors";
+    // }
+    // result_string += " user".sub();
 
-    result_div.getElementsByTagName("p")[0].innerHTML = result_string;
+    // if (result === "win") {
+    //     result_string += " beats ";
+    // }
+    // if (result === "draw") {
+    //     result_string += " played draw with ";
+    // }
+    // if (result === "loss") {
+    //     result_string += " lost ";
+    // }
+
+    // if (pcChoice === "r") {
+    //     result_string += " Rock ";
+    // }
+    // if (pcChoice === "p") {
+    //     result_string += " Paper ";
+    // }
+    // if (pcChoice === "s") {
+    //     result_string += " Scissors ";
+    // }
+    // result_string += " pc".sub();
+
+    // result_p.getElementsByTagName("p")[0].innerHTML = result_string;
+    result_p.innerHTML = result_string;
 };
 
 // const highlightBorder = (userChoice, result) => {

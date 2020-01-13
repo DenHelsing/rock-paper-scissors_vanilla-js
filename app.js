@@ -21,6 +21,8 @@ const startGameSession = userChoice => {
     console.log(result);
     changeScore(result);
     changeResultLabel(userChoice, pcChoice, result);
+    enableGlowEffect(userChoice, result);
+    setTimeout(() => disableGlowEffect(userChoice, result), 300);
 };
 
 const generatePcChoice = () => {
@@ -32,25 +34,39 @@ const generatePcChoice = () => {
 };
 
 const battleResult = (userChoice, pcChoice) => {
-    if (userChoice === "r") {
-        if (pcChoice === "p") {
-            return "loss";
-        } else if (pcChoice === "s") {
+    switch (userChoice + pcChoice) {
+        case "rs":
+        case "pr":
+        case "sp":
             return "win";
-        } else return "draw";
-    } else if (userChoice === "p") {
-        if (pcChoice === "s") {
+        case "rp":
+        case "ps":
+        case "sr":
             return "loss";
-        } else if (pcChoice === "r") {
-            return "win";
-        } else return "draw";
-    } else if (userChoice === "s") {
-        if (pcChoice === "r") {
-            return "loss";
-        } else if (pcChoice === "p") {
-            return "win";
-        } else return "draw";
+        case "rr":
+        case "pp":
+        case "ss":
+            return "draw";
     }
+    // if (userChoice === "r") {
+    //     if (pcChoice === "p") {
+    //         return "loss";
+    //     } else if (pcChoice === "s") {
+    //         return "win";
+    //     } else return "draw";
+    // } else if (userChoice === "p") {
+    //     if (pcChoice === "s") {
+    //         return "loss";
+    //     } else if (pcChoice === "r") {
+    //         return "win";
+    //     } else return "draw";
+    // } else if (userChoice === "s") {
+    //     if (pcChoice === "r") {
+    //         return "loss";
+    //     } else if (pcChoice === "p") {
+    //         return "win";
+    //     } else return "draw";
+    // }
 };
 
 const changeScore = result => {
@@ -125,6 +141,30 @@ const changeResultLabel = (userChoice, pcChoice, result) => {
 
     // result_p.getElementsByTagName("p")[0].innerHTML = result_string;
     result_p.innerHTML = result_string;
+};
+
+const enableGlowEffect = (userChoice, result) => {
+    const effect = convertResultToEffect(result);
+    console.log(effect);
+    console.log(result);
+    document.getElementById(userChoice).classList.add(effect);
+};
+
+const convertResultToEffect = result => {
+    switch (result) {
+        case "win":
+            return "green-glow";
+        case "loss":
+            return "red-glow";
+        case "draw":
+            return "grey-glow";
+    }
+};
+
+const disableGlowEffect = (userChoice, result) => {
+    document
+        .getElementById(userChoice)
+        .classList.remove(convertResultToEffect(result));
 };
 
 // const highlightBorder = (userChoice, result) => {
